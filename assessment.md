@@ -76,3 +76,12 @@ Finally, the results:
 [1] B A B A A E D B A A B C B A E E A B B B
 Levels: A B C D E
 ```
+
+A picture always helps, so we can generate the tree for the training data
+```
+>library(rpart)
+>library(rpart.plot)
+>tree<-rpart(classe~.,data=train_final,method="class")
+>plp(tree)
+```
+[](https://github.com/gilmerino/coursera_practical-ML_project/blob/master/tree.jpg)
