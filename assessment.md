@@ -84,4 +84,4 @@ A picture always helps, so we can generate the tree for the training data
 >tree<-rpart(classe~.,data=train_final,method="class")
 >plp(tree)
 ```
-[](https://github.com/gilmerino/coursera_practical-ML_project/blob/master/tree.jpg)
+![tree image](https://github.com/gilmerino/coursera_practical-ML_project/blob/master/tree.jpg)
