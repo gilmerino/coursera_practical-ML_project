@@ -4,4 +4,4 @@ Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible t
 ##Assignment Goal
 The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases. 
 
-You can find the assignment [here] (https://github.com/gilmerino/coursera_practical-ML_project/assessment.md)
+You can find the assignment [here] (https://github.com/gilmerino/coursera_practical-ML_project/blob/master/assessment.md)
