@@ -60,7 +60,7 @@ And we can now build the random-forest model and the cross-validation (10-fold)
 >model_rf
 ```
 
-The model predictions and the accuraci of it are
+The model predictions and their accuracy are
 ```
 >predict_rf<-predict(model_rf,test)
 >confusionMatrix(test$classe,predict_rf)
