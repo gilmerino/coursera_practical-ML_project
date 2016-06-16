@@ -1,5 +1,6 @@
 ### Practical Machine-Learning Assessment:
 
+
 We first load the package "caret" that will be used for data preparation and modeling
 ```
 > library(caret)
@@ -44,7 +45,7 @@ Let's check dimensions now of the data
 ```
 >dim(train_final);dim(test_final)
 ```
-# slice the data
+
 Now we slice the data
 ```
 >inTrain <- createDataPartition(train_final$classe, p=0.70, list=F)
