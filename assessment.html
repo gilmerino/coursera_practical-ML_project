@@ -1,0 +1,53 @@
+<h3 id="practical-machine-learning-assessment">Practical Machine-Learning Assessment:</h3>
+<p>We first load the package &quot;caret&quot; that will be used for data preparation and modeling</p>
+<pre><code>&gt; library(caret)</code></pre>
+<p>Let's now load the data, supposed to be in the working directory</p>
+<pre><code>&gt;train_csv&lt;-read.csv(&quot;./pml-training.csv&quot;)
+&gt;test_csv &lt;-read.csv(&quot;./pml-testing.csv&quot;)</code></pre>
+<p>It is always a good idea to inspect the data</p>
+<pre><code>&gt;dim(train_csv); dim(test_csv)
+&gt;str(train_csv); str(test_csv)</code></pre>
+<p>Now it is time to clean the data</p>
+<p>First removing all variables with only NA data</p>
+<pre><code>&gt;train_noNA &lt;- train_csv[,colSums(is.na(train_csv))==0]
+&gt;test_noNA  &lt;- test_csv[,colSums(is.na(test_csv))==0]</code></pre>
+<p>and secondly removing variables that are not movement-related (we secure the variable &quot;classe&quot; to be restored afterwards)</p>
+<pre><code>&gt;classe &lt;- train_csv$classe                                  #keep &quot;classe&quot;
+&gt;remove &lt;- grepl(&quot;^X|timestamp|window&quot;, names(train_noNA))   #select variables
+&gt;train_noNA &lt;- train_noNA[, !remove]
+&gt;train_final &lt;- train_noNA[, sapply(train_noNA, is.numeric)]
+&gt;train_final$classe &lt;- classe</code></pre>
+<p>We must do the same for the test data</p>
+<pre><code>&gt;remove &lt;- grepl(&quot;^X|timestamp|window&quot;, names(test_noNA))
+&gt;test_noNA &lt;- test_noNA[, !remove]
+&gt;test_final &lt;- test_noNA[, sapply(test_noNA, is.numeric)]</code></pre>
+<p>Let's check dimensions now of the data</p>
+<pre><code>&gt;dim(train_final);dim(test_final)</code></pre>
+<p>Now we slice the data</p>
+<pre><code>&gt;inTrain &lt;- createDataPartition(train_final$classe, p=0.70, list=F)
+&gt;train &lt;- train_final[inTrain, ]
+&gt;test  &lt;- train_final[-inTrain, ]</code></pre>
+<p>And we can now build the random-forest model and the cross-validation (10-fold)</p>
+<pre><code>&gt;control &lt;- trainControl(method=&quot;cv&quot;, 10) 
+&gt;model_rf &lt;- train(classe ~ ., data=train, method=&quot;rf&quot;, trControl=control, ntree=250)
+&gt;model_rf</code></pre>
+<p>The model predictions and their accuracy are</p>
+<pre><code>&gt;predict_rf&lt;-predict(model_rf,test)
+&gt;confusionMatrix(test$classe,predict_rf)
+&gt;accuracy &lt;- postResample(predict_rf, test$classe)
+&gt;accuracy
+&gt;oose &lt;- 1 - as.numeric(confusionMatrix(test$classe, predict_rf)$overall[1])
+&gt;oose</code></pre>
+<p>Finally, the results:</p>
+<pre><code>&gt;result &lt;- predict(model_rf, test_final[, -length(names(test_final))])
+&gt;result
+[1] B A B A A E D B A A B C B A E E A B B B
+Levels: A B C D E</code></pre>
+<p>A picture always helps, so we can generate the tree for the training data</p>
+<pre><code>&gt;library(rpart)
+&gt;library(rpart.plot)
+&gt;tree&lt;-rpart(classe~.,data=train_final,method=&quot;class&quot;)
+&gt;plp(tree)</code></pre>
+<div class="figure">
+<img src="https://github.com/gilmerino/coursera_practical-ML_project/blob/master/tree.jpg" alt="tree image" /><p class="caption">tree image</p>
+</div>
